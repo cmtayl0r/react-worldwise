@@ -11,6 +11,7 @@ A SPA to collect and display favourite locations in a OpenStreetMap view via Geo
 
 - React
 - Vite for build tool
+- [JSON Server][1] for fake REST API
 
 ## What I learnt
 
