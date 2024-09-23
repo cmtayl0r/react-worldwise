@@ -16,29 +16,20 @@ function CityItem({ city }) {
   //   const { currentCity, deleteCity } = useCities();
 
   // Destructure city object
-  const { cityName, emoji, date, notes } = city;
+  const { cityName, emoji, date, id, position } = city;
 
-  //   function handleClick(e) {
-  //     e.preventDefault();
-  //     deleteCity(id);
-  //   }
-
+  console.log(position);
   return (
     <li>
-      {/* <Link
-        className={`${styles.cityItem} ${
-          id === currentCity.id ? styles["cityItem--active"] : ""
-        }`}
+      {/* 
+        // Opens the City component with the city's details
+        // params: id
+        // query string: lat, lng
+      */}
+      <Link
+        className={`${styles.cityItem}`}
         to={`${id}?lat=${position.lat}&lng=${position.lng}`}
       >
-        <span className={styles.emoji}>{emoji}</span>
-        <h3 className={styles.name}>{cityName}</h3>
-        <time className={styles.date}>({formatDate(date)})</time>
-        <button className={styles.deleteBtn} onClick={handleClick}>
-          &times;
-        </button>
-      </Link> */}
-      <Link className={`${styles.cityItem}`}>
         <span className={styles.emoji}>{emoji}</span>
         <h3 className={styles.name}>{cityName}</h3>
         <time className={styles.date}>({formatDate(date)})</time>

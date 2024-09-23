@@ -16,7 +16,7 @@ A SPA to collect and display favourite locations in a OpenStreetMap view via Geo
 ## What I learnt
 
 - Routing and SPA's in React
-- Routes, and dynamic routes with URL parameters
+- Routes, and dynamic routes with URL parameters using `react-router-dom`
 - Programmatic navigation with `useNavigate`
 - CSS Modules for component styling
 
