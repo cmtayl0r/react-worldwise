@@ -2,7 +2,7 @@
 
 ## Description
 
-A SPA to collect and display favourite locations in OpenStreetMap via Geo-location and other properties.
+A SPA to collect and display favourite locations in a OpenStreetMap view via Geo-location and other data properties.
 
 > [!NOTE]
 > Tutorial initiated project, sourced from The Ultimate React Course
@@ -17,7 +17,7 @@ A SPA to collect and display favourite locations in OpenStreetMap via Geo-locati
 - Routing and SPA's in React
 - Routes, and dynamic routes with URL parameters
 - Programmatic navigation with `useNavigate`
-- CSS Modules
+- CSS Modules for component styling
 
 ## Todo list
 
