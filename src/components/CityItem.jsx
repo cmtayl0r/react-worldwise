@@ -1,17 +1,22 @@
 import { Link } from "react-router-dom";
 // import { useCities } from "../contexts/CitiesContext";
+
+// CSS Modules
 import styles from "./CityItem.module.css";
 
-// const formatDate = (date) =>
-//   new Intl.DateTimeFormat("en", {
-//     day: "numeric",
-//     month: "long",
-//     year: "numeric",
-//   }).format(new Date(date));
+// Function to format date
+const formatDate = (date) =>
+  new Intl.DateTimeFormat("en", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(new Date(date));
 
 function CityItem({ city }) {
   //   const { currentCity, deleteCity } = useCities();
-  //   const { cityName, emoji, date, id, position } = city;
+
+  // Destructure city object
+  const { cityName, emoji, date, notes } = city;
 
   //   function handleClick(e) {
   //     e.preventDefault();
@@ -33,7 +38,11 @@ function CityItem({ city }) {
           &times;
         </button>
       </Link> */}
-      <Link className={`${styles.cityItem}`}> {city.cityName}</Link>
+      <Link className={`${styles.cityItem}`}>
+        <span className={styles.emoji}>{emoji}</span>
+        <h3 className={styles.name}>{cityName}</h3>
+        <time className={styles.date}>({formatDate(date)})</time>
+      </Link>
     </li>
   );
 }
