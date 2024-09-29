@@ -8,7 +8,9 @@ function BackButton() {
     <Button
       type="back"
       onClick={(e) => {
+        // Prevent the default behavior of the button
         e.preventDefault();
+        // Navigate back to the previous page
         navigate(-1);
       }}
     >

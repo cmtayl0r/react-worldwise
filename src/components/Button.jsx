@@ -1,3 +1,4 @@
+// import styles from CSS Modules
 import styles from "./Button.module.css";
 
 function Button({ children, onClick, type }) {
