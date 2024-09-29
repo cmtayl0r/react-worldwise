@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 // import { useCities } from "../contexts/CitiesContext";
 // import BackButton from "./BackButton";
 import styles from "./City.module.css";
@@ -17,10 +17,16 @@ const formatDate = (date) =>
 function City() {
   // param name is the same as the one set in the Route path
   const { id } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const lat = searchParams.get("lat");
+  const lng = searchParams.get("lng");
 
   return (
     <div className={styles.city}>
       <h2>City {id}</h2>
+      <p>
+        Position: {lng}, {lat}
+      </p>
     </div>
   );
 }

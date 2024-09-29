@@ -22,7 +22,7 @@ function CityItem({ city }) {
   return (
     <li>
       {/* 
-        // Opens the City component with the city's details
+        // Opens the City.jsx component with the city's details
         // params: id
         // query string: lat, lng
       */}
