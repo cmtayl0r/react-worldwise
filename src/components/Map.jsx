@@ -1,12 +1,12 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import { useState } from "react";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import { useEffect, useState } from "react";
 import styles from "./Map.module.css";
 import { useCities } from "../contexts/CitiesContext";
 
 function Map() {
   // Navigate to a new location
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // Get the cities from the context via useCities
   const { cities } = useCities();
@@ -15,15 +15,25 @@ function Map() {
   const [mapPosition, setMapPosition] = useState([51.505, -0.09]);
 
   // Get the lat and lng from the query string via useSearchParams
-  // const [searchParams, setSearchParams] = useSearchParams();
-  // const lat = searchParams.get("lat");
-  // const lng = searchParams.get("lng");
+  // Display the current city on the map
+  const [searchParams, setSearchParams] = useSearchParams();
+  const mapLat = searchParams.get("lat");
+  const mapLng = searchParams.get("lng");
+
+  // Update the map position when the lat and lng change
+  // This will be triggered when the user clicks on a city
+  // map position will be remembered when the user navigates back to the map
+  useEffect(() => {
+    if (mapLat && mapLng) {
+      setMapPosition([mapLat, mapLng]);
+    }
+  }, [mapLat, mapLng]);
 
   return (
     <div className={styles.mapContainer}>
       <MapContainer
         center={mapPosition}
-        zoom={13}
+        zoom={6}
         scrollWheelZoom={true}
         className={styles.map}
       >
@@ -42,9 +52,18 @@ function Map() {
             </Popup>
           </Marker>
         ))}
+
+        <ChangeCenter position={mapPosition} />
       </MapContainer>
     </div>
   );
+}
+
+// Leaflet component to change the center of the map
+function ChangeCenter({ position }) {
+  const map = useMap(); // Get access to the map
+  map.setView(position); // Change the center of the map
+  return null;
 }
 
 export default Map;
