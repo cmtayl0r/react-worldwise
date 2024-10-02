@@ -3,7 +3,7 @@ import { useParams, useSearchParams } from "react-router-dom";
 
 // CONTEXTS
 import { useCities } from "../contexts/CitiesContext";
-// import BackButton from "./BackButton";
+import BackButton from "./BackButton";
 
 // COMPONENTS
 import styles from "./City.module.css";
@@ -73,9 +73,9 @@ function City() {
         </a>
       </div>
 
-      {/* <div>
+      <div>
         <BackButton />
-      </div> */}
+      </div>
     </div>
   );
 }
