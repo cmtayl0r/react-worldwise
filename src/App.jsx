@@ -29,7 +29,7 @@ function App() {
             // When the user goes to /app, they will be redirected to /app/cities
             // This is because the Route index element is a Navigate component
           */}
-            {/* <Route index element={<Navigate replace to={cities} />} /> */}
+            <Route index element={<Navigate replace to="/app/cities" />} />
             <Route path="cities" element={<CityList />} />
             {/*
             // When the user clicks on a city, the City component will be rendered 

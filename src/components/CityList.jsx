@@ -2,10 +2,11 @@ import Spinner from "./Spinner";
 import styles from "./CityList.module.css";
 import CityItem from "./CityItem";
 import Message from "./Message";
-// import { useCities } from "../contexts/CitiesContext";
+import { useCities } from "../contexts/CitiesContext";
 
-function CityList({ cities, isLoading }) {
-  // const { cities, isLoading } = useCities();
+function CityList() {
+  // Set the cities and isLoading state from the context
+  const { cities, isLoading } = useCities();
 
   // If cities are loading, display a spinner
   if (isLoading) return <Spinner />;
