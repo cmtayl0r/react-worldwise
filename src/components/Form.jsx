@@ -99,7 +99,7 @@ function Form() {
   // FUNCTIONS -------------------------------------------------
 
   // Handle the form submission
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     // Guard clause to check if the cityName and date are available
     if (!cityName || !date) return;
@@ -112,7 +112,10 @@ function Form() {
       emoji,
       position: { lat, lng },
     };
-    createCity(newCity);
+    // await the createCity function from the context with the newCity object...
+    await createCity(newCity);
+    // ... then, navigate to the app page (cities list)
+    navigate("/app");
   }
 
   // CONDITIONAL RENDERING -------------------------------------
