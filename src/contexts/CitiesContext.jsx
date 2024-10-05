@@ -44,12 +44,33 @@ function CitiesProvider({ children }) {
     }
   }
 
+  async function createCity(newCity) {
+    try {
+      setIsLoading(true);
+      const response = await fetch(`${BASE_URL}/cities`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newCity),
+      });
+      const data = await response.json();
+      // Add the new city to the cities array (JSON Server)
+      setCities((cities) => [...cities, data]);
+    } catch (error) {
+      console.error("Add  error", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   // Context value -------------------------------------------------------------
   const contextValue = {
     cities,
     isLoading,
     currentCity,
     getCity,
+    createCity,
   };
 
   return (

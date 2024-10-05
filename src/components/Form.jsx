@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // CONTEXTS
-// import { useCities } from "../contexts/CitiesContext";
+import { useCities } from "../contexts/CitiesContext";
 
 // 3RD PARTY LIBRARIES
 import DatePicker from "react-datepicker";
@@ -46,7 +46,8 @@ function Form() {
   // Get the lat and lng from the query string via useUrlPosition
   const [lat, lng] = useUrlPosition();
 
-  // const { createCity, isLoading } = useCities();
+  // Get the createCity function from the context
+  const { createCity, isLoading } = useCities();
 
   // Set useNavigate to a variable called navigate
   const navigate = useNavigate();
@@ -111,7 +112,7 @@ function Form() {
       emoji,
       position: { lat, lng },
     };
-    console.log(newCity);
+    createCity(newCity);
   }
 
   // CONDITIONAL RENDERING -------------------------------------
@@ -125,9 +126,9 @@ function Form() {
 
   return (
     <form
-      // className={`${styles.form} ${isLoading ? styles.loading : ""}`}
+      // Add the loading class when the form is loading
+      className={`${styles.form} ${isLoading ? styles.loading : ""}`}
       onSubmit={handleSubmit}
-      className={styles.form}
     >
       <div className={styles.row}>
         <label htmlFor="cityName">City name</label>
