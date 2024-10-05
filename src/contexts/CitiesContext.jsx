@@ -12,6 +12,7 @@ function CitiesProvider({ children }) {
   const [currentCity, setCurrentCity] = useState({});
 
   // Effects -------------------------------------------------------------------
+  // Fetch the cities from the API when the component mounts
   useEffect(() => {
     async function fetchCities() {
       try {
@@ -30,7 +31,11 @@ function CitiesProvider({ children }) {
 
   // Functions -----------------------------------------------------------------
 
+  // These functions will be used in components to interact with the API
+  // They mimic the CRUD operations of a RESTful API
+
   // Function to get a city by id
+  // Used in the Map component
   async function getCity(id) {
     try {
       setIsLoading(true);
@@ -44,6 +49,8 @@ function CitiesProvider({ children }) {
     }
   }
 
+  // Function to create a new city
+  // Used in the Form component
   async function createCity(newCity) {
     try {
       setIsLoading(true);
@@ -58,7 +65,25 @@ function CitiesProvider({ children }) {
       // Add the new city to the cities array (JSON Server)
       setCities((cities) => [...cities, data]);
     } catch (error) {
-      console.error("Add  error", error);
+      console.error("There was an error creating city", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  // Function to delete a city
+  // Used in the CityItem component
+  async function deleteCity(id) {
+    try {
+      setIsLoading(true);
+      await fetch(`${BASE_URL}/cities/${id}`, {
+        method: "DELETE",
+      });
+      // Remove the city from the cities array (JSON Server)
+      // Filter out the city with the id that matches the id passed in
+      setCities((cities) => cities.filter((city) => city.id !== id));
+    } catch (error) {
+      console.error("There was an error deleting city", error);
     } finally {
       setIsLoading(false);
     }
@@ -71,6 +96,7 @@ function CitiesProvider({ children }) {
     currentCity,
     getCity,
     createCity,
+    deleteCity,
   };
 
   return (
@@ -81,6 +107,7 @@ function CitiesProvider({ children }) {
 }
 
 // 3 - Create a custom hook
+// This hook will be used in components to consume the context
 function useCities() {
   const context = useContext(CitiesContext);
   if (context === undefined) {

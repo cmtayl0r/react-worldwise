@@ -15,10 +15,18 @@ const formatDate = (date) =>
   }).format(new Date(date));
 
 function CityItem({ city }) {
-  const { currentCity } = useCities();
+  // Get the deleteCity function from the context
+  const { currentCity, deleteCity } = useCities();
 
   // Destructure city object
   const { cityName, emoji, date, id, position } = city;
+
+  // Function to delete a city
+  function handleClick(e) {
+    e.preventDefault();
+    // Call the deleteCity function from the context
+    deleteCity(id);
+  }
 
   console.log(position);
   return (
@@ -37,6 +45,9 @@ function CityItem({ city }) {
         <span className={styles.emoji}>{emoji}</span>
         <h3 className={styles.name}>{cityName}</h3>
         <time className={styles.date}>({formatDate(date)})</time>
+        <button className={styles.deleteBtn} onClick={handleClick}>
+          &times;
+        </button>
       </Link>
     </li>
   );
