@@ -1,19 +1,26 @@
-// "https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=0&longitude=0"
-
 import { useEffect, useState } from "react";
-// import DatePicker from "react-datepicker";
-// import "react-datepicker/dist/react-datepicker.css";
-
-import Button from "./Button";
-import BackButton from "./BackButton";
-
-import styles from "./Form.module.css";
-import { useUrlPosition } from "../hooks/useUrlPosition";
-import Message from "./Message";
-import Spinner from "./Spinner";
-// import { useCities } from "../contexts/CitiesContext";
 import { useNavigate } from "react-router-dom";
 
+// CONTEXTS
+// import { useCities } from "../contexts/CitiesContext";
+
+// 3RD PARTY LIBRARIES
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+// COMPONENTS
+import Button from "./Button";
+import BackButton from "./BackButton";
+import Message from "./Message";
+import Spinner from "./Spinner";
+
+// HOOKS
+import { useUrlPosition } from "../hooks/useUrlPosition";
+
+// STYLES
+import styles from "./Form.module.css";
+
+// HELPER FUNCTIONS
 export function convertToEmoji(countryCode) {
   const codePoints = countryCode
     .toUpperCase()
@@ -22,9 +29,12 @@ export function convertToEmoji(countryCode) {
   return String.fromCodePoint(...codePoints);
 }
 
+// CONSTANTS
 const BASE_URL = "https://api.bigdatacloud.net/data/reverse-geocode-client";
 
 function Form() {
+  // STATE -------------------------------------------------
+
   const [cityName, setCityName] = useState("");
   const [country, setCountry] = useState("");
   const [date, setDate] = useState(new Date());
@@ -40,6 +50,8 @@ function Form() {
 
   // Set useNavigate to a variable called navigate
   const navigate = useNavigate();
+
+  // EFFECTS -------------------------------------------------
 
   // Get the city data when the component mounts
   useEffect(() => {
@@ -83,18 +95,26 @@ function Form() {
     fetchCityData();
   }, [lat, lng]); // Call the function when the lat and lng change
 
+  // FUNCTIONS -------------------------------------------------
+
   // Handle the form submission
   function handleSubmit(e) {
     e.preventDefault();
+    // Guard clause to check if the cityName and date are available
+    if (!cityName || !date) return;
     // Create a new city object
     const newCity = {
       cityName,
       country,
       date,
       notes,
+      emoji,
       position: { lat, lng },
     };
+    console.log(newCity);
   }
+
+  // CONDITIONAL RENDERING -------------------------------------
 
   // If the lat and lng are not available, show a message
   if (!lat || !lng) return <Message message="Start by clicking on the map" />;
@@ -122,12 +142,12 @@ function Form() {
       <div className={styles.row}>
         <label htmlFor="date">When did you go to {cityName}?</label>
 
-        {/* <DatePicker
+        <DatePicker
           id="date"
-          onChange={(date) => setDate(date)}
-          selected={date}
+          onChange={(date) => setDate(date)} // set the date when the user selects a date
+          selected={date} // current value of the date (today)
           dateFormat="dd/MM/yyyy"
-        /> */}
+        />
       </div>
 
       <div className={styles.row}>
