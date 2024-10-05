@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import styles from "./Map.module.css";
 import { useCities } from "../contexts/CitiesContext";
 import { useGeolocation } from "../hooks/useGeoLocation";
+import { useUrlPosition } from "../hooks/useUrlPosition";
 import Button from "./Button";
 
 function Map() {
@@ -20,17 +21,14 @@ function Map() {
     getPosition,
   } = useGeolocation();
 
+  // Get the lat and lng from the query string via useSearchParams
+  const [mapLat, mapLng] = useUrlPosition();
+
   // Get the cities from the context via useCities
   const { cities } = useCities();
 
   // State to store the map position
   const [mapPosition, setMapPosition] = useState([51.505, -0.09]);
-
-  // Get the lat and lng from the query string via useSearchParams
-  // Display the current city on the map
-  const [searchParams, setSearchParams] = useSearchParams();
-  const mapLat = searchParams.get("lat");
-  const mapLng = searchParams.get("lng");
 
   // Update the map position when the lat and lng change
   // This will be triggered when the user clicks on a city

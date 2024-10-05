@@ -8,7 +8,7 @@ import Button from "./Button";
 import BackButton from "./BackButton";
 
 import styles from "./Form.module.css";
-// import { useUrlPosition } from "../hooks/useUrlPosition";
+import { useUrlPosition } from "../hooks/useUrlPosition";
 import Message from "./Message";
 import Spinner from "./Spinner";
 // import { useCities } from "../contexts/CitiesContext";
@@ -25,83 +25,88 @@ export function convertToEmoji(countryCode) {
 const BASE_URL = "https://api.bigdatacloud.net/data/reverse-geocode-client";
 
 function Form() {
-  // const [lat, lng] = useUrlPosition();
-  // const { createCity, isLoading } = useCities();
-
-  // Set useNavigate to a variable called navigate
-  const navigate = useNavigate();
-
-  // const [isLoadingGeocoding, setIsLoadingGeocoding] = useState(false);
   const [cityName, setCityName] = useState("");
   const [country, setCountry] = useState("");
   const [date, setDate] = useState(new Date());
   const [notes, setNotes] = useState("");
   const [emoji, setEmoji] = useState("");
-  // const [geocodingError, setGeocodingError] = useState("");
+  const [isLoadingGeocoding, setIsLoadingGeocoding] = useState(false);
+  const [geocodingError, setGeocodingError] = useState("");
 
-  // useEffect(
-  //   function () {
-  //     if (!lat && !lng) return;
+  // Get the lat and lng from the query string via useUrlPosition
+  const [lat, lng] = useUrlPosition();
 
-  //     async function fetchCityData() {
-  //       try {
-  //         setIsLoadingGeocoding(true);
-  //         setGeocodingError("");
+  // const { createCity, isLoading } = useCities();
 
-  //         const res = await fetch(
-  //           `${BASE_URL}?latitude=${lat}&longitude=${lng}`
-  //         );
-  //         const data = await res.json();
-  //         console.log(data);
+  // Set useNavigate to a variable called navigate
+  const navigate = useNavigate();
 
-  //         if (!data.countryCode)
-  //           throw new Error(
-  //             "That doesn't seem to be a city. Click somewhere else 😉"
-  //           );
+  // Get the city data when the component mounts
+  useEffect(() => {
+    // Guard clause to check if lat and lng are available
+    if (!lat || !lng) {
+      setGeocodingError(
+        "No latitude and longitude found. Click somewhere else"
+      );
+      return;
+    }
 
-  //         setCityName(data.city || data.locality || "");
-  //         setCountry(data.countryName);
-  //         setEmoji(convertToEmoji(data.countryCode));
-  //       } catch (err) {
-  //         setGeocodingError(err.message);
-  //       } finally {
-  //         setIsLoadingGeocoding(false);
-  //       }
-  //     }
-  //     fetchCityData();
-  //   },
-  //   [lat, lng]
-  // );
+    // If the lat and lng are available, fetch the city data
+    async function fetchCityData() {
+      try {
+        // Set isLoadingGeocoding to true because we are fetching data
+        setIsLoadingGeocoding(true);
+        // Reset the geocoding error
+        setGeocodingError("");
+        const response = await fetch(
+          `${BASE_URL}?latitude=${lat}&longitude=${lng}`
+        );
+        const data = await response.json();
+        console.log(data);
 
-  // async function handleSubmit(e) {
-  //   e.preventDefault();
+        // If the country code is not found, throw an error
+        if (!data.countryCode)
+          throw new Error("Country code not found. Click somewhere else");
 
-  //   if (!cityName || !date) return;
+        setCityName(data.city || data.locality || "");
+        setCountry(data.countryName);
+        setEmoji(convertToEmoji(data.countryCode));
+      } catch (err) {
+        console.log(err);
+        // Set the error message to the error message
+        setGeocodingError(err.message);
+      } finally {
+        setIsLoadingGeocoding(false);
+      }
+    }
+    // Call the fetchCityData function
+    fetchCityData();
+  }, [lat, lng]); // Call the function when the lat and lng change
 
-  //   const newCity = {
-  //     cityName,
-  //     country,
-  //     emoji,
-  //     date,
-  //     notes,
-  //     position: { lat, lng },
-  //   };
+  // Handle the form submission
+  function handleSubmit(e) {
+    e.preventDefault();
+    // Create a new city object
+    const newCity = {
+      cityName,
+      country,
+      date,
+      notes,
+      position: { lat, lng },
+    };
+  }
 
-  //   await createCity(newCity);
-  //   navigate("/app/cities");
-  // }
-
-  // if (isLoadingGeocoding) return <Spinner />;
-
-  // if (!lat && !lng)
-  // return <Message message="Start by clicking somewhere on the map" />;
-
-  // if (geocodingError) return <Message message={geocodingError} />;
+  // If the lat and lng are not available, show a message
+  if (!lat || !lng) return <Message message="Start by clicking on the map" />;
+  // If the geocoding is loading, show a spinner
+  if (isLoadingGeocoding) return <Spinner />;
+  // If there is an error, show the error message
+  if (geocodingError) return <Message message={geocodingError} />;
 
   return (
     <form
       // className={`${styles.form} ${isLoading ? styles.loading : ""}`}
-      // onSubmit={handleSubmit}
+      onSubmit={handleSubmit}
       className={styles.form}
     >
       <div className={styles.row}>
