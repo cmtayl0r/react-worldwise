@@ -7,8 +7,8 @@ function User() {
   const navigate = useNavigate();
 
   function handleClick() {
-    logout();
-    navigate("/");
+    logout(); // call logout function from context
+    navigate("/"); // navigate back to the homepage
   }
 
   return (

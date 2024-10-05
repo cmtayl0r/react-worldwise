@@ -1,14 +1,12 @@
 import { createContext, useContext, useReducer } from "react";
 
-// Fake user object
+// Fake user object for demonstration purposes
 const FAKE_USER = {
   name: "Jack",
   email: "jack@example.com",
   password: "qwerty",
   avatar: "https://i.pravatar.cc/100?u-zz",
 };
-
-// https://i.pravatar.cc/100?u-zz
 
 // 1 - Create a new context
 const AuthContext = createContext();
@@ -33,7 +31,8 @@ function Reducer(state, action) {
 
 // 2 - Create a provider
 function AuthProvider({ children }) {
-  const [user, isAuthenticated, dispatch] = useReducer(Reducer, initialState);
+  const [state, dispatch] = useReducer(Reducer, initialState);
+  const { user, isAuthenticated } = state;
 
   function login(email, password) {
     // Fake login function
@@ -52,9 +51,7 @@ function AuthProvider({ children }) {
   const contextValue = { user, isAuthenticated, login, logout };
 
   return (
-    <AuthContext.Provider value={{ contextValue }}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 }
 
@@ -64,6 +61,7 @@ function useAuth() {
   if (!context) {
     throw new Error("useAuth must be used within an AuthProvider");
   }
+  return context;
 }
 
 // 4 - Export the provider and the custom hook
