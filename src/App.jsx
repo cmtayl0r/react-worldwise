@@ -11,6 +11,7 @@ import CityList from "./components/CityList";
 import CountryList from "./components/CountryList";
 import City from "./components/City";
 import Form from "./components/Form";
+import ProtectedRoute from "./pages/ProtectedRoute";
 
 // CONTEXTS
 import { CitiesProvider } from "./contexts/CitiesContext";
@@ -26,7 +27,18 @@ function App() {
             <Route path="product" element={<Product />} />
             <Route path="pricing" element={<Pricing />} />
             <Route path="login" element={<Login />} />
-            <Route path="app" element={<AppLayout />}>
+            {/* 
+              // The AppLayout component is wrapped in a ProtectedRoute component 
+              // This means that the AppLayout component will only be rendered if the user is authenticated
+            */}
+            <Route
+              path="app"
+              element={
+                <ProtectedRoute>
+                  <AppLayout />
+                </ProtectedRoute>
+              }
+            >
               {/* 
             // When the user goes to /app, they will be redirected to /app/cities
             // This is because the Route index element is a Navigate component
