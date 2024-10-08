@@ -4,6 +4,7 @@ import {
   useState,
   useEffect,
   useReducer,
+  useCallback,
 } from "react";
 const BASE_URL = "http://localhost:9000";
 
@@ -82,21 +83,25 @@ function CitiesProvider({ children }) {
 
   // Function to get a city by id
   // Used in the Map component
-  async function getCity(id) {
-    // Guard clause to check if the id is the same as the current city id
-    if (id === currentCity.id) return;
+  // useCallback is used to memoize the function and prevent unnecessary re-renders when the id changes
+  const getCity = useCallback(
+    async function getCity(id) {
+      // Guard clause to check if the id is the same as the current city id
+      if (id === currentCity.id) return;
 
-    // Dispatch the loading action
-    dispatch({ type: "loading" });
-    try {
-      const response = await fetch(`${BASE_URL}/cities/${id}`);
-      const data = await response.json();
-      dispatch({ type: "city/loaded", payload: data });
-    } catch {
-      // Dispatch the rejected action
-      dispatch({ type: "rejected", payload: "Fetch city error" });
-    }
-  }
+      // Dispatch the loading action
+      dispatch({ type: "loading" });
+      try {
+        const response = await fetch(`${BASE_URL}/cities/${id}`);
+        const data = await response.json();
+        dispatch({ type: "city/loaded", payload: data });
+      } catch {
+        // Dispatch the rejected action
+        dispatch({ type: "rejected", payload: "Fetch city error" });
+      }
+    },
+    [currentCity.id]
+  );
 
   // Function to create a new city
   // Used in the Form component
